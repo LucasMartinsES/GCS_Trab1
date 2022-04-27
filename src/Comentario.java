@@ -3,7 +3,8 @@ import java.time.LocalDateTime;
 public class Comentario {
     private String comentario;
     private Usuarios usuario;
-    private LocalDateTime dataHora;
+    private LocalDateTime momentoCriado;
+    private LocalDateTime momentoEditado;
 
     public Comentario(String comentario, Usuarios usuario) {
         if (comentario.length() > 100) {
@@ -12,7 +13,7 @@ public class Comentario {
             this.comentario = comentario;
         }
         this.usuario = usuario;
-        this.dataHora = LocalDateTime.now();
+        this.momentoCriado = LocalDateTime.now();
     }
 
     public String getComentario() {
@@ -23,18 +24,22 @@ public class Comentario {
         return usuario;
     }
 
-    public LocalDateTime getDataHora() {
-        return dataHora;
+    public LocalDateTime getMomentoCriado() {
+        return momentoCriado;
     }
 
-    public boolean setComentario(String comentario) {
+    public LocalDateTime getMomentoEditado() {
+        return momentoEditado;
+    }
+
+    public boolean editar(String comentario) {
         if (comentario != null && comentario.isEmpty() == false) {
             if (comentario.length() > 100) {
                 this.comentario = comentario.substring(0, 100);
             } else {
                 this.comentario = comentario;
             }
-            this.dataHora = LocalDateTime.now();
+            this.momentoEditado = LocalDateTime.now();
             return true;
         }
         return false;
