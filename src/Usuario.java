@@ -1,14 +1,14 @@
-public class Usuarios {
+public class Usuario {
     public enum TipoUsuario {
         AUTOR, ADM
     }
 
     private static Integer GLOBAL_IDENTIFICADOR = 0;
     private TipoUsuario tipoUsuario;
-    private Integer identificador;
+    private int identificador;
     private String nome;
 
-    protected Usuarios(String nome, TipoUsuario tipoUsuario) {
+    protected Usuario(String nome, TipoUsuario tipoUsuario) {
         this.identificador = GLOBAL_IDENTIFICADOR++;
         this.nome = nome;
         this.tipoUsuario = tipoUsuario;
@@ -18,7 +18,7 @@ public class Usuarios {
         return tipoUsuario;
     }
 
-    public Integer getIdentificador() {
+    public int getIdentificador() {
         return identificador;
     }
 

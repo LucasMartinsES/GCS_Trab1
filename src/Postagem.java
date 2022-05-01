@@ -2,7 +2,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Postagem {
-    private Usuarios usuario;
+    private static int POSTAGEM_GLOBAL_ID = 0;
+    private int postagemId;
+    private Usuario usuario;
     private LocalDateTime momentoCriado;
     private LocalDateTime momentoEditado;
     private String texto;
@@ -10,7 +12,8 @@ public class Postagem {
     private String link;
     private ArrayList<Comentario> comentarios;
 
-    public Postagem(Usuarios usuario, String texto) {
+    public Postagem(Usuario usuario, String texto) {
+        this.postagemId = POSTAGEM_GLOBAL_ID++;
         this.usuario = usuario;
         this.momentoCriado = LocalDateTime.now();
         this.texto = texto;
@@ -18,7 +21,11 @@ public class Postagem {
         comentarios = new ArrayList<Comentario>();
     }
 
-    public Usuarios getUsuario() {
+    public int getPostagemId() {
+        return postagemId;
+    }
+
+    public Usuario getUsuario() {
         return usuario;
     }
 
@@ -46,7 +53,7 @@ public class Postagem {
         return comentarios;
     }
 
-    public boolean setUsuario(Usuarios usuario) {
+    public boolean setUsuario(Usuario usuario) {
         if (usuario != null) {
             this.usuario = usuario;
             return true;
@@ -102,13 +109,7 @@ public class Postagem {
     }
 
     public boolean removerComentario(Comentario comentario) {
-        for (int i = 0; i < comentarios.size(); i++) {
-            if (comentarios.get(i) == comentario) {
-                comentarios.remove(i);
-                return true;
-            }
-        }
-        return false;
+        return comentarios.removeIf(it -> it.getComentarioId() == comentario.getComentarioId());
     }
 
     public int quantidadeComentarios() {
