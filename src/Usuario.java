@@ -1,6 +1,20 @@
+import java.util.stream.Stream;
+
 public class Usuario {
     public enum TipoUsuario {
-        AUTOR, ADM
+        ADM(1), AUTOR(2);
+        private final int id;
+
+        private TipoUsuario(int id) {
+            this.id = id;
+        }
+
+        public static TipoUsuario ofId(int id) {
+            return Stream.of(values())
+                    .filter(it -> it.id == id)
+                    .findFirst()
+                    .orElse(TipoUsuario.AUTOR);
+        }
     }
 
     private static Integer GLOBAL_IDENTIFICADOR = 0;
