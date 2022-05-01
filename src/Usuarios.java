@@ -26,9 +26,12 @@ public class Usuarios {
         return nome;
     }
 
-
+    @Override
     public String toString() {
-        return "Usuário [" + identificador + "] nome: " + nome;
-
+        return "Usuarios{" +
+                "tipoUsuario=" + tipoUsuario +
+                ", identificador=" + identificador +
+                ", nome='" + nome + '\'' +
+                '}';
     }
 }
