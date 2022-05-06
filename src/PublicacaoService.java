@@ -30,6 +30,35 @@ public class PublicacaoService {
         return false;
     }
 
+    public List<Comentario> buscaComentarioPorTexto(String texto) {
+        List<Comentario> comentarios = new ArrayList<Comentario>();
+        for(Postagem p : postagens.values()) {
+            for(Comentario c : p.getComentarios()) {
+                if(c.getComentario().contains(texto)) comentarios.add(c);
+            }
+        }
+        return comentarios
+                .stream()
+                .sorted(Comparator.comparing(Comentario :: getMomentoCriado))
+                .collect(Collectors.toList());
+    }
+
+    public List<Postagem> buscaPostagemPorTexto(String texto) {        
+        return postagens.values().stream()
+                .filter(postagem -> postagem.getTexto().contains(texto))
+                .sorted(Comparator.comparing(Postagem :: getMomentoCriado))
+                .collect(Collectors.toList());
+    }
+
+    public List<Postagem> buscaPostagemsPorTag(ArrayList<String> tags) {
+        return postagens
+                .values().stream()
+                .filter(postagem -> postagem.getTags().stream()
+                .anyMatch(tag -> tags.contains(tag)))
+                .sorted(Comparator.comparing(Postagem :: getMomentoCriado))
+                .collect(Collectors.toList());
+    }
+
     private Optional<Map.Entry<Integer, Comentario>> buscaComentarioComPostagemId(int comentarioId) {
         return postagens.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, it -> it.getValue().getComentarios()))
