@@ -3,13 +3,20 @@ import java.util.List;
 import java.util.Optional;
 
 public class UsuarioRepository {
-    private final List<Usuario> usuarios;
+    private final ArrayList<Usuario> usuarios;
 
     public UsuarioRepository() {
         usuarios = new ArrayList<>();
     }
+    
+    
+    public ArrayList<Usuario> getRUsuarios() {
+		return usuarios;
+	}
 
-    public Usuario connectUser(String username, Usuario.TipoUsuario tipoUsuario) {
+    
+
+	public Usuario connectUser(String username, Usuario.TipoUsuario tipoUsuario) {
         Optional<Usuario> possivelUsuario = usuarios.stream()
                 .filter(it -> it.getNome().equals(username))
                 .findFirst();
