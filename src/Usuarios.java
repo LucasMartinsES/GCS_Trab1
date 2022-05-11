@@ -1,14 +1,24 @@
 public class Usuarios {
-    
-    private String identificador;
-    private String nome;
-    
-    public Usuarios(String aIdentificador, String aNome) {
-        this.identificador = aIdentificador;
-        this.nome = aNome;
+    public enum TipoUsuario {
+        AUTOR, ADM
     }
 
-    public String getId() {
+    private static Integer GLOBAL_IDENTIFICADOR = 0;
+    private TipoUsuario tipoUsuario;
+    private Integer identificador;
+    private String nome;
+
+    protected Usuarios(String nome, TipoUsuario tipoUsuario) {
+        this.identificador = GLOBAL_IDENTIFICADOR++;
+        this.nome = nome;
+        this.tipoUsuario = tipoUsuario;
+    }
+
+    public TipoUsuario getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public Integer getIdentificador() {
         return identificador;
     }
 
@@ -16,8 +26,12 @@ public class Usuarios {
         return nome;
     }
 
-
+    @Override
     public String toString() {
-        return "Usuário [" + identificador + "] nome: " + nome; 
-
+        return "Usuarios{" +
+                "tipoUsuario=" + tipoUsuario +
+                ", identificador=" + identificador +
+                ", nome='" + nome + '\'' +
+                '}';
+    }
 }
