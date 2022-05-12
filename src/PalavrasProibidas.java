@@ -12,7 +12,7 @@ public class PalavrasProibidas {
     private List<String> listaDeLogs = new ArrayList<>();
     private String usuario;
     public String retornoDeTesteDeMensagem = "Não há palavras proibidas!";
-    public Boolean oMenuEstaAtivo = true;
+    private Boolean oMenuEstaAtivo = true;
 
 
 
@@ -20,7 +20,6 @@ public class PalavrasProibidas {
         palavrasProibidas.add("Bobao");
         palavrasProibidas.add("Drogas");
         palavrasProibidas.add("Otorrinolaringologista");
-
         sc = _sc;
     }
 
