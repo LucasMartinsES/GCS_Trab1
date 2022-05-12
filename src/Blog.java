@@ -1,6 +1,10 @@
 import java.util.Scanner;
 
 public class Blog {
+    public void inicializa(){
+
+    }
+
     public void executa(){
         showMenuLogin();
         interacaoLogin();

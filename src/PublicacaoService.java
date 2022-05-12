@@ -274,4 +274,40 @@ public class PublicacaoService {
 				|| usuario.getTipoUsuario() == Usuario.TipoUsuario.ADM;
 	}
 
+	public boolean postagemPodeSerEditada(Usuario usuario, int postagemId) {
+		Postagem postagemToEdite = postagens.get(postagemId);
+		if (postagemToEdite == null){
+			return false;
+		}
+		if (postagemPodeSerRemovida(usuario, postagemToEdite)) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean comentarioPodeSerEditado(Usuario usuario, int comentarioId) {
+		Optional<Map.Entry<Integer, Comentario>> comentarioWithPostagemId = buscaComentarioComPostagemId(comentarioId);
+		if (comentarioWithPostagemId.isEmpty()){
+			return false;
+		}
+		if (comentarioPodeSerDeletado(usuario, comentarioWithPostagemId.get().getValue())) {
+			return true;
+		}
+		return false;
+	}
+
+	public void editaPostagem(String textoEditado, int postagemId){
+		Postagem postagemToEdite = postagens.get(postagemId);
+		postagemToEdite.editar(textoEditado);
+	}
+
+	public void editaComentario(String textoEditado, int comentarioId){
+		Optional<Map.Entry<Integer, Comentario>> comentarioWithPostagemId = buscaComentarioComPostagemId(comentarioId);
+		Comentario comentario = comentarioWithPostagemId.get().getValue();
+		int postagemId = comentarioWithPostagemId.get().getKey();
+		Postagem postagem = postagens.get(postagemId);
+		comentario.editar(textoEditado);
+		postagens.put(postagemId, postagem);
+	}
+
 }
