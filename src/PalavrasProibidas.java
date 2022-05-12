@@ -11,7 +11,7 @@ public class PalavrasProibidas {
     private List<String> palavrasProibidas = new ArrayList<>();
     private List<String> listaDeLogs = new ArrayList<>();
     private String usuario;
-    private String retornoMensagem = "Não há palavras proibidas!";
+    public String retornoDeTesteDeMensagem = "Não há palavras proibidas!";
     public Boolean oMenuEstaAtivo = true;
 
 
@@ -176,11 +176,11 @@ public class PalavrasProibidas {
         listaDeLogs.add(log);
         PalavrasProibidasNaMensagem += "e isto não é permitido!";
         if (haPalavrasProibidas) {
-            retornoMensagem = PalavrasProibidasNaMensagem;
+            retornoDeTesteDeMensagem = PalavrasProibidasNaMensagem;
         } else {
-            retornoMensagem = "Não há palavras proibidas";
+            retornoDeTesteDeMensagem = "Não há palavras proibidas";
         }
-        System.out.println(retornoMensagem);
+        System.out.println(retornoDeTesteDeMensagem);
         return haPalavrasProibidas;
     }
 
