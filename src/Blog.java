@@ -5,7 +5,13 @@ public class Blog {
 
     public void inicializa(){
 
-        Usuarios usuario0 = new Usuarios("José", Usuarios.TipoUsuario.ADM);
+        Usuarios usuario1 = new Usuarios("José", Usuarios.TipoUsuario.ADM);
+        Usuarios usuario2 = new Usuarios("Pedro", Usuarios.TipoUsuario.AUTOR);
+        Usuarios usuario3 = new Usuarios("Maria", Usuarios.TipoUsuario.ADM);
+        Usuarios usuario4 = new Usuarios("Leandro", Usuarios.TipoUsuario.AUTOR);
+        Usuarios usuario5 = new Usuarios("Clara", Usuarios.TipoUsuario.AUTOR);
+        Usuarios usuario6 = new Usuarios("Bernardo", Usuarios.TipoUsuario.AUTOR);
+
     }
     public void executa(){
         showMenuLogin();
