@@ -6,7 +6,6 @@ public class Blog {
     public void inicializa(){
 
         Usuarios usuario0 = new Usuarios("José", Usuarios.TipoUsuario.ADM);
-
     }
     public void executa(){
         showMenuLogin();
@@ -15,7 +14,6 @@ public class Blog {
 
 
     public void showMenuLogin() {
-
         System.out.println("/-------------------------------------------------------------------/");
         System.out.println("/SELECIONE 1 PARA CRIAR UM NOVO USUARIO OU SELECIONE SUA CATEGORIA  /");
         System.out.println("/ 1-Voce é um novo usuario?                                         /");
@@ -120,8 +118,7 @@ public class Blog {
                 break;
 
             case "2":
-                showMenuAutor();
-                interacaoAutor();
+                usuarioCadastrado();
                 break;
 
             case "3":
