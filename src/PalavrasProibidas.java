@@ -10,17 +10,18 @@ public class PalavrasProibidas {
     private Scanner sc;
     private List<String> palavrasProibidas = new ArrayList<>();
     private List<String> listaDeLogs = new ArrayList<>();
-    private String usuario;
+    private Usuario usuario;
     public String retornoDeTesteDeMensagem = "Não há palavras proibidas!";
     private Boolean oMenuEstaAtivo = true;
 
 
 
-    PalavrasProibidas(Scanner _sc) {
+    PalavrasProibidas(Scanner _sc, Usuario _usuario) {
         palavrasProibidas.add("Bobao");
         palavrasProibidas.add("Drogas");
         palavrasProibidas.add("Otorrinolaringologista");
         sc = _sc;
+        usuario = _usuario;
     }
 
     public void iniciarMenuPalavrasProibidas(){
@@ -139,7 +140,7 @@ public class PalavrasProibidas {
     private void testarMensagem() {
         System.out.print(menu3);
         String mensagem = sc.nextLine();
-        var mensagemProibida = verificarSeHaPalavrasProibidas(mensagem, "usuarioTeste");
+        var mensagemProibida = verificarSeHaPalavrasProibidas(mensagem);
         if (!mensagemProibida) {
             System.out.println("Mensagem enviada!");
         } else {
@@ -157,7 +158,7 @@ public class PalavrasProibidas {
     //  Retorna true se haver palavras proibidas e salva na lista de string "listaDeLogs" um log no formato a seguir:
     //  Palavra proibida: Bobao em 07/05/2022 - 12:43:33 Usuario: nomeDoUsuario
     //  A mensagem de retorno fica armazenada na variável PalavrasProibidasNaMensagem.
-    public Boolean verificarSeHaPalavrasProibidas(String mensagem, String usuario) {
+    public Boolean verificarSeHaPalavrasProibidas(String mensagem) {
         Boolean haPalavrasProibidas = false;
         String PalavrasProibidasNaMensagem = "A sua mensagem contém: ";
         List<String> mensagemDoUsuario = Arrays.asList(mensagem.replaceAll("[^à-úÀ-ÚA-Za-z0-9 ]","").split(" "));
@@ -171,9 +172,10 @@ public class PalavrasProibidas {
                 }
             }
         }
-        log += dataAtual() + " - User: " + usuario;
+        log += dataAtual() + " - User: " + usuario.getNome();
         listaDeLogs.add(log);
         PalavrasProibidasNaMensagem += "e isto não é permitido!";
+
         if (haPalavrasProibidas) {
             retornoDeTesteDeMensagem = PalavrasProibidasNaMensagem;
         } else {
