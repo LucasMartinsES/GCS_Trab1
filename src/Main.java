@@ -1,6 +1,8 @@
 public class Main {
     public static void main(String[] args) {
-        Usuarios autor = new Usuarios("autor1", Usuarios.TipoUsuario.AUTOR);
-        Usuarios adm = new Usuarios("adm2", Usuarios.TipoUsuario.ADM);
+
+        Usuarios u1 = new Usuarios("adm-111", "");
+        Usuarios u2 = new Usuarios("adm-222", "");
+
     }
 }

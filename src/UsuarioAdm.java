@@ -1,5 +1,7 @@
-public class UsuarioAdm extends Usuario {
-    public UsuarioAdm(String nome) {
-        super(nome, TipoUsuario.ADM);
-    }
+public class UsuarioAdm extends Usuarios {
+
+    private String Administrador;
+
+    public UsuarioAdm(String aIdentificador, String aNome, String adm) {
+        super(aIdentificador, aNome);
 }
