@@ -1,3 +1,9 @@
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -80,5 +86,29 @@ public class PublicacaoService {
         return usuario.getTipoUsuario() == Usuario.TipoUsuario.AUTOR &&
                 comentario.getUsuario().getIdentificador() == usuario.getIdentificador() ||
                 usuario.getTipoUsuario() == Usuario.TipoUsuario.ADM;
+    }
+
+    public void salvaPostagensArqCsv(String arq, Usuario usuario){
+        Path path = Paths.get(arq + ".csv");
+        List<Postagem> postagens = new ArrayList<Postagem>();
+        postagens = buscaPostagensPorUsuario(usuario);
+        try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path, Charset.defaultCharset()))){
+
+            for (Postagem p: postagens){
+                writer.print(p.getTexto()+ ";" + p.getTags() + ";" + p.getLink());
+            }
+
+        }
+        catch (IOException e){
+            System.err.format("Erro de E/S: %s%n", e);
+        }
+    }
+
+    private List<Postagem> buscaPostagensPorUsuario(Usuario usuario) {
+
+        return postagens.values().stream()
+                .filter(postagem -> postagem.getUsuario().getIdentificador() == usuario.getIdentificador())
+                .sorted(Comparator.comparing(Postagem :: getMomentoCriado))
+                .collect(Collectors.toList());
     }
 }
