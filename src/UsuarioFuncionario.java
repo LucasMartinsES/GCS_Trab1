@@ -5,4 +5,3 @@ public class UsuarioFuncionario extends Usuarios {
     public UsuarioFuncionario(String aIdentificador, String aNome) {
         super(aIdentificador, aNome);
 }
-}

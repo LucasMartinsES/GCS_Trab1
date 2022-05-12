@@ -4,5 +4,4 @@ public class UsuarioAdm extends Usuarios {
 
     public UsuarioAdm(String aIdentificador, String aNome, String adm) {
         super(aIdentificador, aNome);
-    }
 }
