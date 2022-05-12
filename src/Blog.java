@@ -3,7 +3,10 @@ import java.util.Scanner;
 public class Blog {
     Scanner input = new Scanner(System.in);
 
+    public void inicializa(){
+        Usuarios usuario0 = new Usuarios("José", Usuarios.TipoUsuario.ADM);
 
+    }
     public void executa(){
         showMenuLogin();
         interacaoLogin();
@@ -11,12 +14,13 @@ public class Blog {
 
 
     public void showMenuLogin() {
-        System.out.println("/--------------------------------/");
-        System.out.println("/ Qual o seu nível de acesso: ---/");
-        System.out.println("/ 1-Adm                          /");
-        System.out.println("/ 2-Autor                        /");
-        System.out.println("/ 3-Sair                         /");
-        System.out.println("/--------------------------------/");
+
+        System.out.println("/-------------------------------------------------------------------/");
+        System.out.println("/SELECIONE 1 PARA CRIAR UM NOVO USUARIO OU SELECIONE SUA CATEGORIA  /");
+        System.out.println("/ 1-Voce é um novo usuario?                                         /");
+        System.out.println("/ 2-você ja possui uma conta?                                       /");
+        System.out.println("/ 3-Sair                                                            /");
+        System.out.println("/-------------------------------------------------------------------/");
     }
 
     private void showMenuAdm() {
@@ -52,14 +56,65 @@ public class Blog {
         System.out.println("/--------------------------------------/");
     }
 
+    public void cadastroUsuario(){
+        String escolha = null;
+        Usuarios.TipoUsuario tipo = null;
+        System.out.println("entre com o seu nome: ");
+        String nome = input.nextLine();
+        int aux = 0;
+        while (aux == 0) {
+            System.out.println("entre com o tipo do usuario: ");
+            System.out.println("1-Adm");
+            System.out.println("2-Autor");
+            escolha = input.nextLine();
+            switch (escolha){
+                case "1":
+                    tipo = Usuarios.TipoUsuario.ADM;
+                    aux = 1;
+                    break;
+                case "2":
+                    tipo = Usuarios.TipoUsuario.AUTOR;
+                    aux = 1;
+                    break;
+                default:
+                    System.out.println("Entrada invalida");
+                    break;
+            }
+        }
+        Usuarios u = new Usuarios(nome,tipo);
+        if(u.getTipoUsuario().equals(Usuarios.TipoUsuario.ADM)){
+            showMenuAdm();
+            interacaoAdm();
+
+        }
+        else{
+            showMenuAutor();
+            interacaoAutor();
+        }
+
+    }
+    public void usuarioCadastrado(){
+        System.out.println("/Listra de usuarios para escolher/");
+
+        /*if(usuario.getTipoUsuario().equals(Usuarios.TipoUsuario.ADM)){
+            showMenuAdm();
+            interacaoAdm();
+
+        }
+        else{
+            showMenuAutor();
+            interacaoAutor();
+        }*/
+    }
+
 
 
     public void interacaoLogin(){
         String escolha = input.nextLine();
         switch (escolha){
             case "1":
-                showMenuAdm();
-                interacaoAdm();
+                cadastroUsuario();
+
                 break;
 
             case "2":
