@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class UsuarioRepository {
@@ -10,11 +9,9 @@ public class UsuarioRepository {
     }
     
     
-    public ArrayList<Usuario> getRUsuarios() {
+    public ArrayList<Usuario> getUsuarios() {
 		return usuarios;
 	}
-
-    
 
 	public Usuario connectUser(String username, Usuario.TipoUsuario tipoUsuario) {
         Optional<Usuario> possivelUsuario = usuarios.stream()
