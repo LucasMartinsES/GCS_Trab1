@@ -93,11 +93,10 @@ public class PublicacaoService {
         List<Postagem> postagens = new ArrayList<Postagem>();
         postagens = buscaPostagensPorUsuario(usuario);
         try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path, Charset.defaultCharset()))){
-
-            for (Postagem p: postagens){
-                writer.print(p.getTexto()+ ";" + p.getTags() + ";" + p.getLink());
+            writer.print("Texto;Data Criação;Tags;Link");
+            for (Postagem p: postagens) {
+                writer.print(p.getTexto() + ";" + p.getMomentoCriado() + ";" + p.getTags() + ";" + p.getLink());
             }
-
         }
         catch (IOException e){
             System.err.format("Erro de E/S: %s%n", e);
