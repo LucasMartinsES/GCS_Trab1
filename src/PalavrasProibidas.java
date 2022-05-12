@@ -10,7 +10,6 @@ public class PalavrasProibidas {
     private Scanner sc;
     private List<String> palavrasProibidas = new ArrayList<>();
     private List<String> listaDeLogs = new ArrayList<>();
-    private Usuario usuario;
     public String retornoDeTesteDeMensagem = "Não há palavras proibidas!";
     private Boolean oMenuEstaAtivo = true;
 
@@ -21,7 +20,6 @@ public class PalavrasProibidas {
         palavrasProibidas.add("Drogas");
         palavrasProibidas.add("Otorrinolaringologista");
         sc = _sc;
-        usuario = _usuario;
     }
 
     public void iniciarMenuPalavrasProibidas(){
@@ -140,7 +138,7 @@ public class PalavrasProibidas {
     private void testarMensagem() {
         System.out.print(menu3);
         String mensagem = sc.nextLine();
-        var mensagemProibida = verificarSeHaPalavrasProibidas(mensagem);
+        var mensagemProibida = verificarSeHaPalavrasProibidas(mensagem, "UsuarioTeste");
         if (!mensagemProibida) {
             System.out.println("Mensagem enviada!");
         } else {
@@ -158,7 +156,7 @@ public class PalavrasProibidas {
     //  Retorna true se haver palavras proibidas e salva na lista de string "listaDeLogs" um log no formato a seguir:
     //  Palavra proibida: Bobao em 07/05/2022 - 12:43:33 Usuario: nomeDoUsuario
     //  A mensagem de retorno fica armazenada na variável PalavrasProibidasNaMensagem.
-    public Boolean verificarSeHaPalavrasProibidas(String mensagem) {
+    public Boolean verificarSeHaPalavrasProibidas(String mensagem, String usuario) {
         Boolean haPalavrasProibidas = false;
         String PalavrasProibidasNaMensagem = "A sua mensagem contém: ";
         List<String> mensagemDoUsuario = Arrays.asList(mensagem.replaceAll("[^à-úÀ-ÚA-Za-z0-9 ]","").split(" "));
@@ -172,7 +170,7 @@ public class PalavrasProibidas {
                 }
             }
         }
-        log += dataAtual() + " - User: " + usuario.getNome();
+        log += dataAtual() + " - User: " + usuario;
         listaDeLogs.add(log);
         PalavrasProibidasNaMensagem += "e isto não é permitido!";
 
