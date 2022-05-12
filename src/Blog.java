@@ -4,6 +4,7 @@ public class Blog {
     Scanner input = new Scanner(System.in);
 
     public void inicializa(){
+
         Usuarios usuario0 = new Usuarios("José", Usuarios.TipoUsuario.ADM);
 
     }
@@ -30,15 +31,17 @@ public class Blog {
         System.out.println("/ 1. Busca postagens por tags          /");
         System.out.println("/ 2. Buscar postagens por texto        /");
         System.out.println("/ 3. Busca comentario por texto        /");
-        System.out.println("/ 4. Adicionar palavras proibida       /");
-        System.out.println("/ 5. Remover palavras proibidas        /");
-        System.out.println("/ 6. Consultar log de ocorrencias      /");
-        System.out.println("/ 7. Adicionar postagem                /");
-        System.out.println("/ 8. Remover postagem                  /");
-        System.out.println("/ 9. Adicionar comentário              /");
-        System.out.println("/ 10. Remover comentário               /");
-        System.out.println("/ 11. Salvar em arquivo CSV            /");
-        System.out.println("/ 12. Painel de informações do blog    /");
+        System.out.println("/ 4. Editar comentario                 /");
+        System.out.println("/ 5. Editar postagem                   /");
+        System.out.println("/ 6. Adicionar palavras proibida       /");
+        System.out.println("/ 7. Remover palavras proibidas        /");
+        System.out.println("/ 8. Consultar log de ocorrencias      /");
+        System.out.println("/ 9. Adicionar postagem                /");
+        System.out.println("/ 10. Remover postagem                 /");
+        System.out.println("/ 11. Adicionar comentário             /");
+        System.out.println("/ 12. Remover comentário               /");
+        System.out.println("/ 13. Salvar em arquivo CSV            /");
+        System.out.println("/ 14. Painel de informações do blog    /");
         System.out.println("/--------------------------------------/");
     }
 
@@ -49,10 +52,12 @@ public class Blog {
         System.out.println("/ 1. Busca postagens por tags          /");
         System.out.println("/ 2. Buscar postagens por texto        /");
         System.out.println("/ 3. Busca comentario por texto        /");
-        System.out.println("/ 4. Adicionar postagem                /");
-        System.out.println("/ 5. Remover postagem                  /");
-        System.out.println("/ 6. Adicionar comentário              /");
-        System.out.println("/ 7. Remover comentário                /");
+        System.out.println("/ 4. Editar comentario                 /");
+        System.out.println("/ 5. Editar postagem                   /");
+        System.out.println("/ 6. Adicionar postagem                /");
+        System.out.println("/ 7. Remover postagem                  /");
+        System.out.println("/ 8. Adicionar comentário              /");
+        System.out.println("/ 9. Remover comentário                /");
         System.out.println("/--------------------------------------/");
     }
 
@@ -107,14 +112,11 @@ public class Blog {
         }*/
     }
 
-
-
     public void interacaoLogin(){
         String escolha = input.nextLine();
         switch (escolha){
             case "1":
                 cadastroUsuario();
-
                 break;
 
             case "2":
@@ -186,35 +188,46 @@ public class Blog {
                 break;
 
             case "8":
-                System.out.println("7");
+                System.out.println("8");
                 showMenuAdm();
                 interacaoAdm();
                 break;
 
             case "9":
-                System.out.println("7");
+                System.out.println("9");
                 showMenuAdm();
                 interacaoAdm();
                 break;
 
             case "10":
-                System.out.println("7");
+                System.out.println("10");
                 showMenuAdm();
                 interacaoAdm();
                 break;
 
             case "11":
-                System.out.println("7");
+                System.out.println("11");
                 showMenuAdm();
                 interacaoAdm();
                 break;
 
             case "12":
-                System.out.println("7");
+                System.out.println("12");
                 showMenuAdm();
                 interacaoAdm();
                 break;
 
+            case "13":
+                System.out.println("13");
+                showMenuAdm();
+                interacaoAdm();
+                break;
+
+            case "14":
+                System.out.println("14");
+                showMenuAdm();
+                interacaoAdm();
+                break;
 
             default:
                 System.out.println("Entrada invalida");
@@ -275,6 +288,18 @@ public class Blog {
                 interacaoAutor();
                 break;
 
+            case "8":
+                System.out.println("8");
+                showMenuAdm();
+                interacaoAdm();
+                break;
+
+            case "9":
+                System.out.println("9");
+                showMenuAdm();
+                interacaoAdm();
+                break;
+
             default:
                 System.out.println("Entrada invalida");
                 showMenuAutor();
@@ -282,6 +307,4 @@ public class Blog {
                 break;
         }
     }
-
-
 }
