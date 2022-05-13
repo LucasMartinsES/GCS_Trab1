@@ -95,7 +95,7 @@ public class PalavrasProibidas {
     }
 
     //  Insere palavra proibida da lista de palavras proibidas
-    private void inserirNovaPalavra() {
+    public void inserirNovaPalavra() {
         System.out.print(menu1);
         listarPalavrasProibidas();
         System.out.println("###################################################");
@@ -113,7 +113,7 @@ public class PalavrasProibidas {
     }
 
     //  Remove palavra proibida da lista de palavras proibidas
-    private void removerPalavraProibida() {
+    public void removerPalavraProibida() {
         System.out.print(menu2);
         listarPalavrasProibidas();
         System.out.println("###################################################");
@@ -173,7 +173,7 @@ public class PalavrasProibidas {
     }
 
     //  Imprime no console a lista de logs
-    private void imprimirLogsNoConsole() {
+    public void imprimirLogsNoConsole() {
         System.out.print(menu5);
         if (listaDeLogs.isEmpty()) {
             System.out.println("Não há logs registrados no momento");

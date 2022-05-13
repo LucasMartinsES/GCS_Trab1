@@ -1,19 +1,33 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class Blog {
-    Scanner input = new Scanner(System.in);
+    private Scanner input;
+    private PublicacaoService publicacaoService;
+    private PalavrasProibidas palavrasProibidas;
+    private UsuarioRepository repo;
 
-    public void inicializa(){
-
-        Usuario usuario1 = new Usuario("José", Usuario.TipoUsuario.ADM);
-        Usuario usuario2 = new Usuario("Pedro", Usuario.TipoUsuario.AUTOR);
-        Usuario usuario3 = new Usuario("Maria", Usuario.TipoUsuario.ADM);
-        Usuario usuario4 = new Usuario("Leandro", Usuario.TipoUsuario.AUTOR);
-        Usuario usuario5 = new Usuario("Clara", Usuario.TipoUsuario.AUTOR);
-        Usuario usuario6 = new Usuario("Bernardo", Usuario.TipoUsuario.AUTOR);
-
+    public Blog(Scanner input, PublicacaoService publicacaoService, PalavrasProibidas palavrasProibidas, 
+                UsuarioRepository repo) {
+        this.input = input;
+        this.publicacaoService = publicacaoService;
+        this.palavrasProibidas = palavrasProibidas;
+        this.repo = repo;
     }
-    public void executa(){
+
+    public void inicializa() {
+        repo.salva(new Usuario("José", Usuario.TipoUsuario.ADM));
+        repo.salva(new Usuario("Pedro", Usuario.TipoUsuario.AUTOR));
+        repo.salva(new Usuario("Maria", Usuario.TipoUsuario.ADM));
+        repo.salva(new Usuario("Leandro", Usuario.TipoUsuario.AUTOR));
+        repo.salva(new Usuario("Clara", Usuario.TipoUsuario.AUTOR));
+        repo.salva(new Usuario("Bernardo", Usuario.TipoUsuario.AUTOR));
+    }
+
+    public void executa() {
         showMenuLogin();
         interacaoLogin();
     }
@@ -21,10 +35,9 @@ public class Blog {
 
     public void showMenuLogin() {
         System.out.println("/-------------------------------------------------------------------/");
-        System.out.println("/SELECIONE 1 PARA CRIAR UM NOVO USUARIO OU SELECIONE SUA CATEGORIA  /");
-        System.out.println("/ 1-Voce é um novo usuario?                                         /");
-        System.out.println("/ 2-você ja possui uma conta?                                       /");
-        System.out.println("/ 3-Sair                                                            /");
+        System.out.println("/ SELECIONE 1 PARA CRIAR UM NOVO USUARIO OU SELECIONE SUA CATEGORIA /");
+        System.out.println("/ 1-Logar                                                           /");
+        System.out.println("/ 2-Sair                                                            /");
         System.out.println("/-------------------------------------------------------------------/");
     }
 
@@ -32,20 +45,16 @@ public class Blog {
         System.out.println("/--------------------------------------/");
         System.out.println("/ Escolha uma opcao                    /");
         System.out.println("/ 0. Deslogar                          /");
-        System.out.println("/ 1. Busca postagens por tags          /");
-        System.out.println("/ 2. Buscar postagens por texto        /");
-        System.out.println("/ 3. Busca comentario por texto        /");
-        System.out.println("/ 4. Editar comentario                 /");
-        System.out.println("/ 5. Editar postagem                   /");
-        System.out.println("/ 6. Adicionar palavras proibida       /");
-        System.out.println("/ 7. Remover palavras proibidas        /");
-        System.out.println("/ 8. Consultar log de ocorrencias      /");
-        System.out.println("/ 9. Adicionar postagem                /");
-        System.out.println("/ 10. Remover postagem                 /");
-        System.out.println("/ 11. Adicionar comentário             /");
-        System.out.println("/ 12. Remover comentário               /");
-        System.out.println("/ 13. Salvar em arquivo CSV            /");
-        System.out.println("/ 14. Painel de informações do blog    /");
+        System.out.println("/ 1. Listar Postagem                   /");
+        System.out.println("/ 2. Busca postagens por tags          /");
+        System.out.println("/ 3. Buscar postagens por texto        /");
+        System.out.println("/ 4. Busca comentario por texto        /");
+        System.out.println("/ 5. Adicionar palavras proibida       /");
+        System.out.println("/ 6. Remover palavras proibidas        /");
+        System.out.println("/ 7. Consultar log de ocorrencias      /");
+        System.out.println("/ 8. Remover postagem                 /");
+        System.out.println("/ 9. Remover comentário               /");
+        System.out.println("/ 10. Painel de informações do blog    /");
         System.out.println("/--------------------------------------/");
     }
 
@@ -53,19 +62,18 @@ public class Blog {
         System.out.println("/--------------------------------------/");
         System.out.println("/ Escolha uma opcao                    /");
         System.out.println("/ 0. Deslogar                          /");
-        System.out.println("/ 1. Busca postagens por tags          /");
-        System.out.println("/ 2. Buscar postagens por texto        /");
-        System.out.println("/ 3. Busca comentario por texto        /");
-        System.out.println("/ 4. Editar comentario                 /");
-        System.out.println("/ 5. Editar postagem                   /");
-        System.out.println("/ 6. Adicionar postagem                /");
-        System.out.println("/ 7. Remover postagem                  /");
-        System.out.println("/ 8. Adicionar comentário              /");
-        System.out.println("/ 9. Remover comentário                /");
+        System.out.println("/ 1. Listar Postagem                   /");
+        System.out.println("/ 2. Busca postagens por tags          /");
+        System.out.println("/ 3. Buscar postagens por texto        /");
+        System.out.println("/ 4. Busca comentario por texto        /");
+        System.out.println("/ 5. Adicionar postagem                /");
+        System.out.println("/ 6. Remover postagem                  /");
+        System.out.println("/ 7. Adicionar comentário              /");
+        System.out.println("/ 8. Remover comentário                /");
         System.out.println("/--------------------------------------/");
     }
 
-    public void cadastroUsuario(){
+    public void cadastroUsuario() {
         String escolha = null;
         Usuario.TipoUsuario tipo = null;
         System.out.println("entre com o seu nome: ");
@@ -76,7 +84,7 @@ public class Blog {
             System.out.println("1-Adm");
             System.out.println("2-Autor");
             escolha = input.nextLine();
-            switch (escolha){
+            switch (escolha) {
                 case "1":
                     tipo = Usuario.TipoUsuario.ADM;
                     aux = 1;
@@ -90,44 +98,26 @@ public class Blog {
                     break;
             }
         }
-        Usuario u = new Usuario(nome,tipo);
-        if(u.getTipoUsuario().equals(Usuario.TipoUsuario.ADM)){
+        Usuario usuario = repo.connectUser(nome, tipo);
+        if (usuario.getTipoUsuario().equals(Usuario.TipoUsuario.ADM)) {
             showMenuAdm();
-            interacaoAdm();
+            interacaoAdm(usuario);
 
-        }
-        else{
+        } else {
             showMenuAutor();
-            interacaoAutor();
+            interacaoAutor(usuario);
         }
 
     }
-    public void usuarioCadastrado(){
-        System.out.println("/Listra de usuarios para escolher/");
 
-        /*if(usuario.getTipoUsuario().equals(Usuarios.TipoUsuario.ADM)){
-            showMenuAdm();
-            interacaoAdm();
-
-        }
-        else{
-            showMenuAutor();
-            interacaoAutor();
-        }*/
-    }
-
-    public void interacaoLogin(){
+    public void interacaoLogin() {
         String escolha = input.nextLine();
-        switch (escolha){
+        switch (escolha) {
             case "1":
                 cadastroUsuario();
                 break;
 
             case "2":
-                usuarioCadastrado();
-                break;
-
-            case "3":
                 System.out.println("Programa encerrado.");
                 break;
 
@@ -139,175 +129,264 @@ public class Blog {
         }
     }
 
-    public void interacaoAdm(){
-        Scanner input = new Scanner(System.in);
+    public void interacaoAdm(Usuario usuario) {
         String escolha = input.nextLine();
-        switch (escolha){
+        switch (escolha) {
             case "0":
                 showMenuLogin();
                 interacaoLogin();
                 break;
 
             case "1":
-                System.out.println("1");
+                System.out.println("POSTAGENS");
+                publicacaoService.listarPostagens()
+                        .forEach(this::apresentaPostagem);
                 showMenuAdm();
-                interacaoAdm();
+                interacaoAdm(usuario);
                 break;
 
             case "2":
-                System.out.println("2");
+                System.out.println("Digite a tag a ser buscada: ");
+                String tag = input.nextLine();
+                List<Postagem> postagemList = publicacaoService.buscaPostagemsPorTag(tag);
+                if (postagemList.isEmpty()) {
+                    System.out.println("Nenhum poastagem encontrada");
+                } else {
+                    postagemList.forEach(this::apresentaPostagem);
+                }
                 showMenuAdm();
-                interacaoAdm();
+                interacaoAdm(usuario);
                 break;
 
             case "3":
-                System.out.println("3");
+                System.out.println("Insira o texto a ser buscado");
+                String text = input.nextLine();
+                List<Postagem> postagems = publicacaoService.buscaPostagemPorTexto(text);
+                if (postagems.isEmpty()) {
+                    System.out.println("Nenhum poastagem encontrada");
+                } else {
+                    postagems.forEach(this::apresentaPostagem);
+                }
                 showMenuAdm();
-                interacaoAdm();
+                interacaoAdm(usuario);
                 break;
 
             case "4":
-                System.out.println("4");
+                System.out.println("Insira o texto a ser buscado");
+                String comentario = input.nextLine();
+                List<Comentario> comentarios = publicacaoService.buscaComentarioPorTexto(comentario);
+                if (comentarios.isEmpty()) {
+                    System.out.println("Nenhum poastagem encontrada");
+                } else {
+                    comentarios.forEach(this::apresentaComentarios);
+                }
                 showMenuAdm();
-                interacaoAdm();
+                interacaoAdm(usuario);
                 break;
 
             case "5":
-                System.out.println("5");
+                palavrasProibidas.inserirNovaPalavra();
                 showMenuAdm();
-                interacaoAdm();
+                interacaoAdm(usuario);
                 break;
 
             case "6":
-                System.out.println("6");
+                palavrasProibidas.removerPalavraProibida();
                 showMenuAdm();
-                interacaoAdm();
+                interacaoAdm(usuario);
                 break;
 
             case "7":
-                System.out.println("7");
+                palavrasProibidas.imprimirLogsNoConsole();
                 showMenuAdm();
-                interacaoAdm();
+                interacaoAdm(usuario);
                 break;
 
             case "8":
-                System.out.println("8");
+                System.out.println("Qual id da postagem deseja deletar: ");
+                int postagemId = input.nextInt();
+                boolean possivel = publicacaoService.removePostagem(usuario, postagemId);
+                if (possivel) {
+                    System.out.println("Removido");
+                } else {
+                    System.out.println("Não foi possivel remover a postagem");
+                }
                 showMenuAdm();
-                interacaoAdm();
+                interacaoAdm(usuario);
                 break;
 
             case "9":
-                System.out.println("9");
+                System.out.println("Qual id do comentario deseja deletar: ");
+                int cometarioID = input.nextInt();
+                boolean removido = publicacaoService.removeComentario(usuario, cometarioID);
+                if (removido) {
+                    System.out.println("Removido");
+                } else {
+                    System.out.println("Não foi possivel remover o comentario");
+                }
                 showMenuAdm();
-                interacaoAdm();
+                interacaoAdm(usuario);
                 break;
 
             case "10":
-                System.out.println("10");
+                System.out.println("=====================");
+                System.out.println(publicacaoService.top5PostagensComMaisComentarios(usuario));
+                System.out.println("====================================");
+                System.out.println(publicacaoService.rankingTop5UsuariosComMaisPostagens(usuario));
+                System.out.println("====================================");
+                System.out.println(publicacaoService.rankingTop10UsuariosComMaisComentarios(usuario));
+                System.out.println("====================================");
                 showMenuAdm();
-                interacaoAdm();
-                break;
-
-            case "11":
-                System.out.println("11");
-                showMenuAdm();
-                interacaoAdm();
-                break;
-
-            case "12":
-                System.out.println("12");
-                showMenuAdm();
-                interacaoAdm();
-                break;
-
-            case "13":
-                System.out.println("13");
-                showMenuAdm();
-                interacaoAdm();
-                break;
-
-            case "14":
-                System.out.println("14");
-                showMenuAdm();
-                interacaoAdm();
+                interacaoAdm(usuario);
                 break;
 
             default:
                 System.out.println("Entrada invalida");
                 showMenuAdm();
-                interacaoAdm();
+                interacaoAdm(usuario);
                 break;
         }
     }
 
-    public void interacaoAutor(){
-        Scanner input = new Scanner(System.in);
+    public void interacaoAutor(Usuario usuario) {
         String escolha = input.nextLine();
-        switch (escolha){
+        switch (escolha) {
             case "0":
                 showMenuLogin();
                 interacaoLogin();
                 break;
 
             case "1":
-                System.out.println("1");
+                System.out.println("POSTAGENS");
+                publicacaoService.listarPostagens()
+                        .forEach(this::apresentaPostagem);
                 showMenuAutor();
-                interacaoAutor();
+                interacaoAutor(usuario);
                 break;
 
             case "2":
-                System.out.println("2");
+                System.out.println("Digite a tag a ser buscada: ");
+                String tag = input.nextLine();
+                List<Postagem> postagemList = publicacaoService.buscaPostagemsPorTag(tag);
+                if (postagemList.isEmpty()) {
+                    System.out.println("Nenhum poastagem encontrada");
+                } else {
+                    postagemList.forEach(this::apresentaPostagem);
+                }
                 showMenuAutor();
-                interacaoAutor();
+                interacaoAutor(usuario);
                 break;
 
             case "3":
-                System.out.println("3");
+                System.out.println("Insira o texto a ser buscado");
+                String text = input.nextLine();
+                List<Postagem> postagems = publicacaoService.buscaPostagemPorTexto(text);
+                if (postagems.isEmpty()) {
+                    System.out.println("Nenhum poastagem encontrada");
+                } else {
+                    postagems.forEach(this::apresentaPostagem);
+                }
                 showMenuAutor();
-                interacaoAutor();
+                interacaoAutor(usuario);
                 break;
 
             case "4":
-                System.out.println("4");
+                System.out.println("Insira o texto a ser buscado");
+                String comentario = input.nextLine();
+                List<Comentario> comentarios = publicacaoService.buscaComentarioPorTexto(comentario);
+                if (comentarios.isEmpty()) {
+                    System.out.println("Nenhum poastagem encontrada");
+                } else {
+                    comentarios.forEach(this::apresentaComentarios);
+                }
                 showMenuAutor();
-                interacaoAutor();
+                interacaoAutor(usuario);
                 break;
 
             case "5":
-                System.out.println("5");
+                System.out.println("INSIRA O TEXTO DA POSTAGEM");
+                String textoPostagem = input.nextLine();
+                List<String> postagemTags = geraTags();
+                boolean postagemCriada = publicacaoService.criaPostagem(usuario, textoPostagem, postagemTags);
+                if (postagemCriada) {
+                    System.out.println("Postagem criada");
+                } else {
+                    System.out.println("Postagem não foi possivel ser criada");
+                }
                 showMenuAutor();
-                interacaoAutor();
+                interacaoAutor(usuario);
                 break;
 
             case "6":
-                System.out.println("6");
+                System.out.println("Qual id da postagem deseja deletar: ");
+                int postagemId = input.nextInt();
+                boolean possivel = publicacaoService.removePostagem(usuario, postagemId);
+                if (possivel) {
+                    System.out.println("Removido");
+                } else {
+                    System.out.println("Não foi possivel remover a postagem");
+                }
                 showMenuAutor();
-                interacaoAutor();
+                interacaoAutor(usuario);
                 break;
 
             case "7":
-                System.out.println("7");
+                System.out.println("INSIRA O TEXTO DO COMETARIO");
+                String textoComentario = input.nextLine();
+                System.out.println("De qual postagem gostaria de comentar");
+                int postagemIdToComment =  input.nextInt();
+                boolean comentarioCriado = publicacaoService.comentarPostagem(postagemIdToComment, textoComentario, usuario);
+                if (comentarioCriado) {
+                    System.out.println("Comentario Feito");
+                } else {
+                    System.out.println("Cometario não foi possivel ser criada");
+                }
                 showMenuAutor();
-                interacaoAutor();
+                interacaoAutor(usuario);
                 break;
-
             case "8":
-                System.out.println("8");
-                showMenuAdm();
-                interacaoAdm();
-                break;
-
-            case "9":
-                System.out.println("9");
-                showMenuAdm();
-                interacaoAdm();
+                System.out.println("Qual id do comentario deseja deletar: ");
+                int cometarioID = input.nextInt();
+                boolean removido = publicacaoService.removeComentario(usuario, cometarioID);
+                if (removido) {
+                    System.out.println("Removido");
+                } else {
+                    System.out.println("Não foi possivel remover o comentario");
+                }
+                showMenuAutor();
+                interacaoAutor(usuario);
                 break;
 
             default:
                 System.out.println("Entrada invalida");
                 showMenuAutor();
-                interacaoAutor();
+                interacaoAutor(usuario);
                 break;
         }
+    }
+
+    private List<String> geraTags() {
+        String tag;
+        List<String> tags = new ArrayList<>();
+        do {
+            System.out.println("Inira as tags, digite -1 para sair");
+            tag = input.nextLine();
+            if (!tag.equals("-1")) {
+                tags.add(tag);
+            }
+        } while (!tag.equals("-1") || tags.isEmpty());
+        return tags;
+    }
+
+    private void apresentaComentarios(Comentario comentario) {
+        System.out.println("======================");
+        System.out.println(comentario);
+        System.out.println("======================");
+    }
+
+    private void apresentaPostagem(Postagem postagem) {
+        System.out.println("======================");
+        System.out.println(postagem);
+        System.out.println("======================");
     }
 }

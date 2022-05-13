@@ -60,7 +60,13 @@ public class Comentario {
         return false;
     }
 
+    @Override
     public String toString() {
-        return comentario;
+        return "Comentario{" +
+                ", comentario='" + comentario + '\'' +
+                ", usuario=" + usuario +
+                ", momentoCriado=" + momentoCriado +
+                ", momentoEditado=" + momentoEditado +
+                '}';
     }
 }

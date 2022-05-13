@@ -23,4 +23,8 @@ public class UsuarioRepository {
         usuarios.add(usuario);
         return usuario;
     }
+
+    public void salva(Usuario usuario){
+        usuarios.add(usuario);
+    }
 }
