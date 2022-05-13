@@ -341,7 +341,7 @@ public class Blog {
                 System.out.println("INSIRA O TEXTO DO COMETARIO");
                 String textoComentario = input.nextLine();
                 System.out.println("De qual postagem gostaria de comentar");
-                int postagemIdToComment =  input.nextInt();
+                int postagemIdToComment = input.nextInt();
                 boolean comentarioCriado = publicacaoService.comentarPostagem(postagemIdToComment, textoComentario, usuario);
                 if (comentarioCriado) {
                     System.out.println("Comentario Feito");
