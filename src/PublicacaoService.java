@@ -8,13 +8,47 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class PublicacaoService {
+
 	private final Map<Integer, Postagem> postagens;
 	// ArrayList de Usuarios que fizeram alguma postagem
 	private UsuarioRepository repositorioUsuario;
+	private PalavrasProibidas proibidas;
 
-	public PublicacaoService() {
+	public PublicacaoService(UsuarioRepository usuarioRepository, PalavrasProibidas proibidas) {
 		postagens = new HashMap<>();
-		repositorioUsuario = new UsuarioRepository();
+		repositorioUsuario = usuarioRepository;
+		this.proibidas = proibidas;
+	}
+
+	public boolean criaPostagem(Usuario usuario, String texto) {
+		Postagem postagem = new Postagem(usuario, texto);
+		boolean permitido = proibidas.verificarSeHaPalavrasProibidas(texto, usuario.getNome());
+		if (permitido) {
+			postagens.put(postagem.getPostagemId(), postagem);
+		}
+		return permitido;
+	}
+	
+	public boolean comentarPostagem(int id,String comentario, Usuario usuario) {
+		boolean permitido = proibidas.verificarSeHaPalavrasProibidas(comentario, usuario.getNome());
+		if (permitido) {
+			Comentario comentarioAdd = new Comentario(comentario, usuario);
+			Postagem postagem = postagens.get(id);
+			if (postagem != null) {
+				postagem.adicionarComentario(comentarioAdd);
+			}
+		}
+		return permitido;
+	}
+
+	public boolean removePostagem(Usuario usuario, int postagemId) {
+		Postagem postagemToDelete = postagens.get(postagemId);
+		if (postagemToDelete == null)
+			return false;
+		if (postagemPodeSerRemovida(usuario, postagemToDelete)) {
+			postagens.remove(postagemId);
+		}
+		return false;
 	}
 
 	// 8.1Retorna uma string com o total de: Posts, Comentarios e Usuarios
@@ -235,8 +269,6 @@ public class PublicacaoService {
 		}
 	}
 	
-	
-	
 
 	public boolean removeComentario(Usuario usuario, int comentarioId) {
 		Optional<Map.Entry<Integer, Comentario>> comentarioWithPostagemId = buscaComentarioComPostagemId(comentarioId);
@@ -252,14 +284,32 @@ public class PublicacaoService {
 		return false;
 	}
 
-    public boolean removePostagem(Usuario usuario, int postagemId) {
-        Postagem postagemToDelete = postagens.get(postagemId);
-        if (postagemToDelete == null) return false;
-        if (postagemPodeSerRemovida(usuario, postagemToDelete)) {
-            postagens.remove(postagemId);
-        }
-        return false;
-    }
+	public List<Comentario> buscaComentarioPorTexto(String texto) {
+		List<Comentario> comentarios = new ArrayList<Comentario>();
+		for (Postagem p : postagens.values()) {
+			for (Comentario c : p.getComentarios()) {
+				if (c.getComentario().contains(texto))
+					comentarios.add(c);
+			}
+		}
+		return comentarios.stream().sorted(Comparator.comparing(Comentario::getMomentoCriado))
+				.collect(Collectors.toList());
+	}
+
+	public List<Postagem> buscaPostagemPorTexto(String texto) {
+		return postagens.values().stream().filter(postagem -> postagem.getTexto().contains(texto))
+				.sorted(Comparator.comparing(Postagem::getMomentoCriado)).collect(Collectors.toList());
+	}
+
+
+	private Optional<Map.Entry<Integer, Comentario>> buscaComentarioComPostagemId(int comentarioId) {
+		return postagens.entrySet().stream()
+				.collect(Collectors.toMap(Map.Entry::getKey, it -> it.getValue().getComentarios())).entrySet().stream()
+				.filter(it -> it.getValue().stream()
+						.anyMatch(comentario -> comentario.getComentarioId() == comentarioId))
+				.collect(Collectors.toMap(Map.Entry::getKey, it -> it.getValue().get(0))).entrySet().stream()
+				.findFirst();
+	}
 
 	private boolean postagemPodeSerRemovida(Usuario usuario, Postagem postagem) {
 		return usuario.getTipoUsuario() == Usuario.TipoUsuario.AUTOR
@@ -273,37 +323,20 @@ public class PublicacaoService {
 				|| usuario.getTipoUsuario() == Usuario.TipoUsuario.ADM;
 	}
 
+	public void salvaPostagensArqCsv(String arq, Usuario usuario) {
+		Path path = Paths.get(arq + ".csv");
+		List<Postagem> postagens = new ArrayList<Postagem>();
+		postagens = buscaPostagensPorUsuario(usuario);
+		try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path, Charset.defaultCharset()))) {
 
-	private Optional<Map.Entry<Integer, Comentario>> buscaComentarioComPostagemId(int comentarioId) {
-		return postagens.entrySet().stream()
-				.collect(Collectors.toMap(Map.Entry::getKey, it -> it.getValue().getComentarios()))
-				.entrySet().stream()
-				.filter(it -> it.getValue().stream()
-						.anyMatch(comentario -> comentario.getComentarioId() == comentarioId)
-				).collect(Collectors.toMap(Map.Entry::getKey, it -> it.getValue().get(0)))
-				.entrySet().stream()
-				.findFirst();
+			for (Postagem p : postagens) {
+				writer.print(p.getTexto() + ";" + p.getTags() + ";" + p.getLink());
+			}
+
+		} catch (IOException e) {
+			System.err.format("Erro de E/S: %s%n", e);
+		}
 	}
-
-    public List<Comentario> buscaComentarioPorTexto(String texto) {
-        List<Comentario> comentarios = new ArrayList<>();
-        for(Postagem p : postagens.values()) {
-            for(Comentario c : p.getComentarios()) {
-                if(c.getComentario().contains(texto)) comentarios.add(c);
-            }
-        }
-        return comentarios
-                .stream()
-                .sorted(Comparator.comparing(Comentario :: getMomentoCriado))
-                .collect(Collectors.toList());
-    }
-
-    public List<Postagem> buscaPostagemPorTexto(String texto) {        
-        return postagens.values().stream()
-                .filter(postagem -> postagem.getTexto().contains(texto))
-                .sorted(Comparator.comparing(Postagem :: getMomentoCriado))
-                .collect(Collectors.toList());
-    }
 
     public List<Postagem> buscaPostagemsPorTag(ArrayList<String> tags) {
         return postagens
@@ -312,21 +345,6 @@ public class PublicacaoService {
                 .anyMatch(tags::contains))
                 .sorted(Comparator.comparing(Postagem :: getMomentoCriado))
                 .collect(Collectors.toList());
-    }
-
-    public void salvaPostagensArqCsv(String arq, Usuario usuario){
-        Path path = Paths.get(arq + ".csv");
-        List<Postagem> postagens = new ArrayList<Postagem>();
-        postagens = buscaPostagensPorUsuario(usuario);
-        try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path, Charset.defaultCharset()))){
-            writer.print("Texto;Data Criação;Tags;Link");
-            for (Postagem p: postagens) {
-                writer.print(p.getTexto() + ";" + p.getMomentoCriado() + ";" + p.getTags() + ";" + p.getLink());
-            }
-        }
-        catch (IOException e){
-            System.err.format("Erro de E/S: %s%n", e);
-        }
     }
 
 	private List<Postagem> buscaPostagensPorUsuario(Usuario usuario) {

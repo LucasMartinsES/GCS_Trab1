@@ -5,12 +5,12 @@ public class Blog {
 
     public void inicializa(){
 
-        Usuarios usuario1 = new Usuarios("José", Usuarios.TipoUsuario.ADM);
-        Usuarios usuario2 = new Usuarios("Pedro", Usuarios.TipoUsuario.AUTOR);
-        Usuarios usuario3 = new Usuarios("Maria", Usuarios.TipoUsuario.ADM);
-        Usuarios usuario4 = new Usuarios("Leandro", Usuarios.TipoUsuario.AUTOR);
-        Usuarios usuario5 = new Usuarios("Clara", Usuarios.TipoUsuario.AUTOR);
-        Usuarios usuario6 = new Usuarios("Bernardo", Usuarios.TipoUsuario.AUTOR);
+        Usuario usuario1 = new Usuario("José", Usuario.TipoUsuario.ADM);
+        Usuario usuario2 = new Usuario("Pedro", Usuario.TipoUsuario.AUTOR);
+        Usuario usuario3 = new Usuario("Maria", Usuario.TipoUsuario.ADM);
+        Usuario usuario4 = new Usuario("Leandro", Usuario.TipoUsuario.AUTOR);
+        Usuario usuario5 = new Usuario("Clara", Usuario.TipoUsuario.AUTOR);
+        Usuario usuario6 = new Usuario("Bernardo", Usuario.TipoUsuario.AUTOR);
 
     }
     public void executa(){
@@ -67,7 +67,7 @@ public class Blog {
 
     public void cadastroUsuario(){
         String escolha = null;
-        Usuarios.TipoUsuario tipo = null;
+        Usuario.TipoUsuario tipo = null;
         System.out.println("entre com o seu nome: ");
         String nome = input.nextLine();
         int aux = 0;
@@ -78,11 +78,11 @@ public class Blog {
             escolha = input.nextLine();
             switch (escolha){
                 case "1":
-                    tipo = Usuarios.TipoUsuario.ADM;
+                    tipo = Usuario.TipoUsuario.ADM;
                     aux = 1;
                     break;
                 case "2":
-                    tipo = Usuarios.TipoUsuario.AUTOR;
+                    tipo = Usuario.TipoUsuario.AUTOR;
                     aux = 1;
                     break;
                 default:
@@ -90,8 +90,8 @@ public class Blog {
                     break;
             }
         }
-        Usuarios u = new Usuarios(nome,tipo);
-        if(u.getTipoUsuario().equals(Usuarios.TipoUsuario.ADM)){
+        Usuario u = new Usuario(nome,tipo);
+        if(u.getTipoUsuario().equals(Usuario.TipoUsuario.ADM)){
             showMenuAdm();
             interacaoAdm();
 

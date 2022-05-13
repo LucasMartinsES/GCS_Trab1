@@ -15,7 +15,7 @@ public class PalavrasProibidas {
 
 
 
-    PalavrasProibidas(Scanner _sc, Usuario _usuario) {
+    PalavrasProibidas(Scanner _sc) {
         palavrasProibidas.add("Bobao");
         palavrasProibidas.add("Drogas");
         palavrasProibidas.add("Otorrinolaringologista");
@@ -132,17 +132,6 @@ public class PalavrasProibidas {
         } else {
             System.out.println("Palavra não cadastrada!");
             System.out.println("###################################################");
-        }
-    }
-
-    private void testarMensagem() {
-        System.out.print(menu3);
-        String mensagem = sc.nextLine();
-        var mensagemProibida = verificarSeHaPalavrasProibidas(mensagem, "UsuarioTeste");
-        if (!mensagemProibida) {
-            System.out.println("Mensagem enviada!");
-        } else {
-            System.out.println("Mensagem contendo palavras proibidas!");
         }
     }
 
