@@ -1,6 +1,14 @@
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        Usuarios autor = new Usuarios("autor1", Usuarios.TipoUsuario.AUTOR);
-        Usuarios adm = new Usuarios("adm2", Usuarios.TipoUsuario.ADM);
+
+        UsuarioRepository usuarioRepository = new UsuarioRepository();
+        PalavrasProibidas proibidas = new PalavrasProibidas(new Scanner(System.in));
+        PublicacaoService publicacaoService = new PublicacaoService(usuarioRepository, proibidas);
+        Blog blog = new Blog();
+        blog.inicializa();
+        blog.executa();
     }
+
 }

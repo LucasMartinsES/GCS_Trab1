@@ -1,4 +1,4 @@
-public class UsuarioAutor extends Usuario {
+public class UsuarioAutor {
     public UsuarioAutor(String nome) {
         super(nome, TipoUsuario.AUTOR);
     }
