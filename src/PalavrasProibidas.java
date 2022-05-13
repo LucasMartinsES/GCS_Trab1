@@ -21,16 +21,6 @@ public class PalavrasProibidas {
         palavrasProibidas.add("Otorrinolaringologista");
         sc = _sc;
     }
-
-    public void iniciarMenuPalavrasProibidas(){
-        oMenuEstaAtivo = true;
-        while(oMenuEstaAtivo){
-            for(int i = 0; i < 5; i++) System.out.print('\n');
-            int valorMenu = iniciarMenuPrincipal();
-            for(int i = 0; i < 5; i++) System.out.print('\n');
-            selecionarOpcoesDoMenu(valorMenu);
-        }
-    }
     private String menu =
             "###################################################\n" +
                     "        P A L A V R A S   P R O I B I D A S        \n" +
@@ -51,11 +41,6 @@ public class PalavrasProibidas {
                         "###################################################\n" +
                         "           R E M O V E R   P A L A V R A           \n" +
                         "###################################################\n";
-    private String menu3 =
-                        "###################################################\n" +
-                        "           T E S T A R   M E N S A G E M           \n" +
-                        "###################################################\n" +
-                        "Imput: ";
     private String menu4 =
                         "###################################################\n" +
                         "        P A L A V R A S   P R O I B I D A S        \n" +
@@ -74,17 +59,6 @@ public class PalavrasProibidas {
         System.out.println("###################################################");
     }
 
-    private int iniciarMenuPrincipal() {
-        System.out.print(menu);
-        var imput = sc.nextLine(); //aguarda o imput do teclado
-        boolean isNumeric = imput.matches("[+-]?\\d*(\\.\\d+)?"); //verifica se o texto é numérico ou não, se for, retorna um inteiro contido caso esteja dentro do range do menu
-        if (isNumeric) {
-            return Integer.parseInt(imput); //converte de string para inteiro
-        } else {
-            return 0;
-        }
-    }
-
     //  converte a String de minusculo para maiúsculo
     private List<String> converterListaDePalavrasProibidasParaUpperCase(List<String> listaDePalavrasProibidas) {
         List<String> palavrasProibidasMaiusculas = new ArrayList<>();
@@ -95,7 +69,7 @@ public class PalavrasProibidas {
     }
 
     //  Insere palavra proibida da lista de palavras proibidas
-    private void inserirNovaPalavra() {
+    public void inserirNovaPalavra() {
         System.out.print(menu1);
         listarPalavrasProibidas();
         System.out.println("###################################################");
@@ -113,7 +87,7 @@ public class PalavrasProibidas {
     }
 
     //  Remove palavra proibida da lista de palavras proibidas
-    private void removerPalavraProibida() {
+    public void removerPalavraProibida() {
         System.out.print(menu2);
         listarPalavrasProibidas();
         System.out.println("###################################################");
@@ -147,33 +121,25 @@ public class PalavrasProibidas {
     //  A mensagem de retorno fica armazenada na variável PalavrasProibidasNaMensagem.
     public Boolean verificarSeHaPalavrasProibidas(String mensagem, String usuario) {
         Boolean haPalavrasProibidas = false;
-        String PalavrasProibidasNaMensagem = "A sua mensagem contém: ";
         List<String> mensagemDoUsuario = Arrays.asList(mensagem.replaceAll("[^à-úÀ-ÚA-Za-z0-9 ]","").split(" "));
         String log = mensagem + "\nPalavra(s) proibida(s): ";;
         for (int i = 0; i < palavrasProibidas.size(); i++) {
             for (int j = 0; j < mensagemDoUsuario.size(); j++) {
                 if (mensagemDoUsuario.get(j).equalsIgnoreCase(palavrasProibidas.get(i))) {
                     log += palavrasProibidas.get(i) + ", ";
-                    PalavrasProibidasNaMensagem += palavrasProibidas.get(i) + ", ";
                     haPalavrasProibidas = true;
                 }
             }
         }
-        log += dataAtual() + " - User: " + usuario;
-        listaDeLogs.add(log);
-        PalavrasProibidasNaMensagem += "e isto não é permitido!";
-
         if (haPalavrasProibidas) {
-            retornoDeTesteDeMensagem = PalavrasProibidasNaMensagem;
-        } else {
-            retornoDeTesteDeMensagem = "Não há palavras proibidas";
+            log += dataAtual() + " - User: " + usuario;
+            listaDeLogs.add(log);
         }
-        System.out.println(retornoDeTesteDeMensagem);
-        return haPalavrasProibidas;
+        return !haPalavrasProibidas;
     }
 
     //  Imprime no console a lista de logs
-    private void imprimirLogsNoConsole() {
+    public void imprimirLogsNoConsole() {
         System.out.print(menu5);
         if (listaDeLogs.isEmpty()) {
             System.out.println("Não há logs registrados no momento");
@@ -183,27 +149,5 @@ public class PalavrasProibidas {
             }
         }
         System.out.println("###################################################");
-    }
-    private void selecionarOpcoesDoMenu(int opcao){
-        switch (opcao){
-            case 1:
-                inserirNovaPalavra();
-                break;
-            case 2:
-                removerPalavraProibida();
-                break;
-            case 3:
-                listarPalavrasProibidas();
-                break;
-            case 4:
-                imprimirLogsNoConsole();
-                break;
-            case 5:
-                oMenuEstaAtivo = false;
-                break;
-            default:
-                System.out.println("Opção inválida!");
-                break;
-        }
     }
 }

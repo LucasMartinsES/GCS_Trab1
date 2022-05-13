@@ -1,5 +1,6 @@
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Postagem {
     private static int POSTAGEM_GLOBAL_ID = 0;
@@ -8,16 +9,23 @@ public class Postagem {
     private LocalDateTime momentoCriado;
     private LocalDateTime momentoEditado;
     private String texto;
-    private ArrayList<String> tags;
+    private List<String> tags;
     private String link;
     private ArrayList<Comentario> comentarios;
 
-    public Postagem(Usuario usuario, String texto) {
+    public Postagem(String texto) {
+        this.momentoCriado = LocalDateTime.now();
+        this.texto = texto;
+        this.tags = new ArrayList<>();
+        comentarios = new ArrayList<Comentario>();
+    }
+
+    public Postagem(Usuario usuario, String texto, List<String> tags) {
         this.postagemId = POSTAGEM_GLOBAL_ID++;
         this.usuario = usuario;
         this.momentoCriado = LocalDateTime.now();
         this.texto = texto;
-        tags = new ArrayList<String>();
+        this.tags = tags;
         comentarios = new ArrayList<Comentario>();
     }
 
@@ -41,7 +49,7 @@ public class Postagem {
         return texto;
     }
 
-    public ArrayList<String> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
@@ -110,6 +118,20 @@ public class Postagem {
 
     public boolean removerComentario(Comentario comentario) {
         return comentarios.removeIf(it -> it.getComentarioId() == comentario.getComentarioId());
+    }
+
+    @Override
+    public String toString() {
+        return "Postagem{" +
+                "postagemId=" + postagemId +
+                ", usuario=" + usuario +
+                ", momentoCriado=" + momentoCriado +
+                ", momentoEditado=" + momentoEditado +
+                ", texto='" + texto + '\'' +
+                ", tags=" + tags +
+                ", link='" + link + '\'' +
+                ", comentarios=" + comentarios +
+                '}';
     }
 
     public int quantidadeComentarios() {

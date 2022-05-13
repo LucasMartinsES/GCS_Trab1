@@ -54,7 +54,6 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuarios{" + "tipoUsuario=" + tipoUsuario + ", identificador=" + identificador + ", nome='" + nome
-                + '\'' + '}';
+        return "Usuarios: " + nome;
     }
 }
