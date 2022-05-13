@@ -43,9 +43,11 @@ public class PublicacaoService {
             Postagem postagem = postagens.get(id);
             if (postagem != null) {
                 postagem.adicionarComentario(comentarioAdd);
+                return true;
             }
+            return false;
         }
-        return permitido;
+        return false;
     }
 
     public boolean removePostagem(Usuario usuario, int postagemId) {

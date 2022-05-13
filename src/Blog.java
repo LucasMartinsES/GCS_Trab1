@@ -131,6 +131,9 @@ public class Blog {
 
     public void interacaoAdm(Usuario usuario) {
         String escolha = input.nextLine();
+        if (escolha.isBlank()) {
+            escolha = input.nextLine();
+        }
         switch (escolha) {
             case "0":
                 showMenuLogin();
@@ -250,6 +253,9 @@ public class Blog {
 
     public void interacaoAutor(Usuario usuario) {
         String escolha = input.nextLine();
+        if (escolha.isBlank()) {
+            escolha = input.nextLine();
+        }
         switch (escolha) {
             case "0":
                 showMenuLogin();

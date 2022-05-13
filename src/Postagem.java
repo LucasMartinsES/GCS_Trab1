@@ -123,6 +123,7 @@ public class Postagem {
     @Override
     public String toString() {
         return "Postagem{" +
+                "postagemId=" + postagemId +
                 ", usuario=" + usuario +
                 ", momentoCriado=" + momentoCriado +
                 ", momentoEditado=" + momentoEditado +
