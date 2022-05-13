@@ -10,7 +10,7 @@ public class Blog {
     private PalavrasProibidas palavrasProibidas;
     private UsuarioRepository repo;
 
-    public Blog(Scanner input, PublicacaoService publicacaoService, PalavrasProibidas palavrasProibidas, 
+    public Blog(Scanner input, PublicacaoService publicacaoService, PalavrasProibidas palavrasProibidas,
                 UsuarioRepository repo) {
         this.input = input;
         this.publicacaoService = publicacaoService;
@@ -70,6 +70,7 @@ public class Blog {
         System.out.println("/ 6. Remover postagem                  /");
         System.out.println("/ 7. Adicionar comentário              /");
         System.out.println("/ 8. Remover comentário                /");
+        System.out.println("/ 9. Geração csv das postagens         /");
         System.out.println("/--------------------------------------/");
     }
 
@@ -340,7 +341,7 @@ public class Blog {
                 System.out.println("INSIRA O TEXTO DO COMETARIO");
                 String textoComentario = input.nextLine();
                 System.out.println("De qual postagem gostaria de comentar");
-                int postagemIdToComment =  input.nextInt();
+                int postagemIdToComment = input.nextInt();
                 boolean comentarioCriado = publicacaoService.comentarPostagem(postagemIdToComment, textoComentario, usuario);
                 if (comentarioCriado) {
                     System.out.println("Comentario Feito");
@@ -359,6 +360,14 @@ public class Blog {
                 } else {
                     System.out.println("Não foi possivel remover o comentario");
                 }
+                showMenuAutor();
+                interacaoAutor(usuario);
+                break;
+
+            case "9":
+                System.out.println("Insira o nome do arquivo para salvar as postagens");
+                String arqName = input.nextLine();
+                publicacaoService.salvaPostagensArqCsv(arqName, usuario);
                 showMenuAutor();
                 interacaoAutor(usuario);
                 break;
